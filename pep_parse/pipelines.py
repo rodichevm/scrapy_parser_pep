@@ -3,7 +3,7 @@ import datetime as dt
 from collections import defaultdict
 
 from pep_parse.constants import (
-    DATETIME_FORMAT,
+    BASE_DIR, DATETIME_FORMAT,
     RESULTS_DIR, STATUS_SUMMARY_FILENAME
 )
 
