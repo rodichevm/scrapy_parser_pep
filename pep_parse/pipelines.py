@@ -10,6 +10,9 @@ from pep_parse.settings import (
 
 
 class PepParsePipeline:
+    def __init__(self):
+        self.results_dir = BASE_DIR / RESULTS
+        self.results_dir.mkdir(exist_ok=True)
 
     def open_spider(self, spider):
         self.status_count = defaultdict(int)
@@ -19,13 +22,14 @@ class PepParsePipeline:
         return item
 
     def close_spider(self, spider):
-        file_path = BASE_DIR / RESULTS / STATUS_SUMMARY_FILENAME.format(
+        file_path = self.results_dir / STATUS_SUMMARY_FILENAME.format(
             now_formatted=dt.datetime.now().strftime(DATETIME_FORMAT),
             file_format=FILE_FORMAT)
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with (open(file_path, 'w', encoding='utf-8') as f):
             csv.writer(
-                f, dialect=csv.unix_dialect).writerows(
-                [TABLE_HEADER,
-                 *self.status_count.items(),
-                 (TABLE_FOOTER, sum(self.status_count.values()))]
-            )
+                f, dialect=csv.unix_dialect, quoting=csv.QUOTE_NONE
+            ).writerows((
+                TABLE_HEADER,
+                *self.status_count.items(),
+                (TABLE_FOOTER, sum(self.status_count.values()))
+            ))
