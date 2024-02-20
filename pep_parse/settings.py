@@ -7,7 +7,7 @@ SPIDER_MODULES = [NEWSPIDER_MODULE]
 
 ROBOTSTXT_OBEY = True
 
-PEP_URL = 'https://peps.python.org/'
+PEP_DOMAIN = 'peps.python.org'
 
 # directories
 BASE_DIR = Path(__file__).parent.parent
