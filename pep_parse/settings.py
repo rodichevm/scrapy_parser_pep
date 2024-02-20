@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from pep_parse.constants import PEP_FILENAME, RESULTS_DIR
 
 BOT_NAME = 'pep_parse'
 
@@ -62,9 +63,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'pep_parse.pipelines.PepParsePipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'pep_parse.pipelines.PepParsePipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -86,3 +87,10 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+FEEDS = {
+    f'{RESULTS_DIR}/{PEP_FILENAME}%(time)s.csv': {
+        'format': 'csv',
+        'fields': ['number', 'name', 'status'],
+        'overwrite': False
+    },
+}
