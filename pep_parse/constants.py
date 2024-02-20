@@ -1,11 +1,7 @@
 # urls
-import os
-from pathlib import Path
-
 PEP_URL = 'https://peps.python.org/'
 
 # directories
-BASE_DIR = Path(__file__).parent
 RESULTS_DIR = 'results'
 
 # formats and names
