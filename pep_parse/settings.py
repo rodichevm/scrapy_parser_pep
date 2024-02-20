@@ -10,21 +10,22 @@ ROBOTSTXT_OBEY = True
 PEP_URL = 'https://peps.python.org/'
 
 # directories
-BASE_DIR = Path(__file__).parent
+BASE_DIR = Path(__file__).parent.parent
 RESULTS = 'results'
-RESULTS_DIR = BASE_DIR / RESULTS
 
 # formats and names
+TABLE_HEADER = ('Статус', 'Количество')
+TABLE_FOOTER = 'Всего'
 DATETIME_FORMAT = '%Y-%m-%d_%H-%M-%S'
 FILE_FORMAT = 'csv'
-PEP_FILENAME = 'pep'
-STATUS_SUMMARY_FILENAME = 'status_summary'
+PEP_FILENAME = 'pep_%(time)s'
+STATUS_SUMMARY_FILENAME = 'status_summary_{now_formatted}.{file_format}'
 
 ITEM_PIPELINES = {
     'pep_parse.pipelines.PepParsePipeline': 300,
 }
 FEEDS = {
-    f'{RESULTS}/{PEP_FILENAME}_%(time)s.{FILE_FORMAT}': {
+    f'{RESULTS}/{PEP_FILENAME}.{FILE_FORMAT}': {
         'format': FILE_FORMAT,
         'fields': ['number', 'name', 'status']
     },

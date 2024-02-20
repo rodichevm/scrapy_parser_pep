@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from pep_parse.settings import (
     BASE_DIR, DATETIME_FORMAT,
-    FILE_FORMAT, RESULTS,
+    FILE_FORMAT, TABLE_FOOTER, TABLE_HEADER, RESULTS,
     STATUS_SUMMARY_FILENAME
 )
 
@@ -19,13 +19,13 @@ class PepParsePipeline:
         return item
 
     def close_spider(self, spider):
-        now_formatted = dt.datetime.now().strftime(DATETIME_FORMAT)
-        with open(
-                f'{RESULTS}/{STATUS_SUMMARY_FILENAME}_{now_formatted}.{FILE_FORMAT}',
-                'w', encoding='utf-8'
-        ) as f:
-            csv.writer(f, dialect=csv.unix_dialect).writerows(
-                [('Статус', 'Количество'),
+        file_path = BASE_DIR / RESULTS / STATUS_SUMMARY_FILENAME.format(
+            now_formatted=dt.datetime.now().strftime(DATETIME_FORMAT),
+            file_format=FILE_FORMAT)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            csv.writer(
+                f, dialect=csv.unix_dialect).writerows(
+                [TABLE_HEADER,
                  *self.status_count.items(),
-                 ('Всего', sum(self.status_count.values()))]
+                 (TABLE_FOOTER, sum(self.status_count.values()))]
             )
