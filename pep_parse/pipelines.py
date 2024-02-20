@@ -2,13 +2,18 @@ import csv
 import datetime as dt
 from collections import defaultdict
 
-from pep_parse.constants import (
+from pep_parse.settings import (
     BASE_DIR, DATETIME_FORMAT,
-    RESULTS_DIR, STATUS_SUMMARY_FILENAME
+    FILE_FORMAT, RESULTS,
+    STATUS_SUMMARY_FILENAME
 )
 
 
 class PepParsePipeline:
+
+    def __init__(self):
+        self.results_dir = BASE_DIR / RESULTS
+        self.results_dir.mkdir(exist_ok=True)
 
     def open_spider(self, spider):
         self.status_count = defaultdict(int)
@@ -20,7 +25,7 @@ class PepParsePipeline:
     def close_spider(self, spider):
         now_formatted = dt.datetime.now().strftime(DATETIME_FORMAT)
         with open(
-                f'{RESULTS_DIR}/{STATUS_SUMMARY_FILENAME}{now_formatted}.csv',
+                f'{STATUS_SUMMARY_FILENAME}_{now_formatted}.{FILE_FORMAT}',
                 'w', encoding='utf-8'
         ) as f:
             csv.writer(f, dialect=csv.unix_dialect).writerows(

@@ -1,7 +1,7 @@
 import scrapy
 
-from pep_parse.constants import PEP_URL
 from pep_parse.items import PepParseItem
+from pep_parse.settings import PEP_URL
 
 
 class PepSpider(scrapy.Spider):
