@@ -1,7 +1,9 @@
+import re
+
 import scrapy
 
 from pep_parse.items import PepParseItem
-from pep_parse.settings import PEP_DOMAIN
+from pep_parse.settings import PEP_DOMAIN, PEP_REGEXPRESSION
 
 
 class PepSpider(scrapy.Spider):
@@ -14,9 +16,11 @@ class PepSpider(scrapy.Spider):
             yield response.follow(pep_link, callback=self.parse_pep)
 
     def parse_pep(self, response):
-        number, name = response.css('.page-title::text').get().split(' – ')
+        number, name = re.search(
+            PEP_REGEXPRESSION,
+            response.css('.page-title::text').get().replace('–', '')).groups()
         yield PepParseItem(
-            number=number[4:],
+            number=number,
             name=name,
             status=response.css('abbr::text').get()
         )
